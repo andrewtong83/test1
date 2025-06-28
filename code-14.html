@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K3 數學互動練習卷</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #b0e0e6;
+            border-radius: 10px;
+        }
+        h1, h2 {
+            color: #008080;
+            text-align: center;
+            border-bottom: 2px solid #4682b4;
+            padding-bottom: 10px;
+        }
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .student-info input {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        .question-block {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question-block .title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #4682b4;
+        }
+        .question-block .content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .question-block .content img {
+            max-height: 80px;
+            vertical-align: middle;
+        }
+        .question-block input[type="text"] {
+            width: 50px;
+            text-align: center;
+            font-size: 1.2em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .choices label {
+            display: inline-block;
+            margin-right: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        .result {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin: 0 10px;
+        }
+        .button.reset {
+            background-color: #f44336;
+        }
+        .clickable-img {
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .clickable-img.selected {
+            border-color: #4CAF50;
+        }
+        .feedback {
+            font-size: 1.5em;
+            margin-left: 10px;
+        }
+        #final-score {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>K3 數學互動練習卷</h1>
+    <div class="student-info">
+        <span>姓名：<input type="text" placeholder="請輸入姓名"></span>
+        <span>班別：K3A</span>
+        <span>學號：<input type="text" placeholder="請輸入學號"></span>
+    </div>
+
+    <!-- Section 1: 認識錢幣 -->
+    <h2>(一) 認識錢幣和數量</h2>
+    <div class="question-block" id="q1">
+        <div class="title">1. 小明想買一架玩具車，玩具車售 8 元。請點選足夠的錢幣來付款。</div>
+        <div class="content">
+            <img src="https://i.imgur.com/KbdZ2Qh.png" alt="玩具車 8元">
+            <div id="q1-coins">
+                <img src="https://i.imgur.com/gK2x3C5.png" alt="5元" data-value="5" class="clickable-img">
+                <img src="https://i.imgur.com/gK2x3C5.png" alt="5元" data-value="5" class="clickable-img">
+                <img src="https://i.imgur.com/0iW7B0x.png" alt="2元" data-value="2" class="clickable-img">
+                <img src="https://i.imgur.com/0iW7B0x.png" alt="2元" data-value="2" class="clickable-img">
+                <img src="https://i.imgur.com/lD2G3q2.png" alt="1元" data-value="1" class="clickable-img">
+                <img src="https://i.imgur.com/lD2G3q2.png" alt="1元" data-value="1" class="clickable-img">
+                <img src="https://i.imgur.com/lD2G3q2.png" alt="1元" data-value="1" class="clickable-img">
+            </div>
+            <span class="feedback" id="q1-feedback"></span>
+        </div>
+    </div>
+
+    <!-- Section 2: 加減法 -->
+    <h2>(二) 計算與單雙數</h2>
+    <div class="question-block" id="q2">
+        <div class="title">2. 計算以下算式，並圈出答案是單數還是雙數。</div>
+        <div class="content">
+            7 + 2 = <input type="text" id="q2-ans">
+            <div class="choices" id="q2-oe">
+                <label><input type="radio" name="q2-oe" value="單數"> 單數</label>
+                <label><input type="radio" name="q2-oe" value="雙數"> 雙數</label>
+            </div>
+            <span class="feedback" id="q2-feedback"></span>
+        </div>
+    </div>
+    <div class="question-block" id="q3">
+        <div class="title">3. 10 的一半是多少？</div>
+        <div class="content">
+            答案是：<input type="text" id="q3-ans">
+            <span class="feedback" id="q3-feedback"></span>
+        </div>
+    </div>
+    <div class="question-block" id="q4">
+        <div class="title">4. 認識連加法： 2 + 3 + 4 = ?</div>
+        <div class="content">
+            答案是：<input type="text" id="q4-ans">
+            <span class="feedback" id="q4-feedback"></span>
+        </div>
+    </div>
+
+    <!-- Section 3: 比較 -->
+    <h2>(三) 比較概念</h2>
+    <div class="question-block" id="q5">
+        <div class="title">5. 比較容量：哪個水瓶裝的水最多？</div>
+        <div class="content">
+            <div id="q5-choices">
+                <img src="https://i.imgur.com/Jd0yq1C.png" alt="水瓶A" class="clickable-img" data-choice="A"> A
+                <img src="https://i.imgur.com/v8tTlLJ.png" alt="水瓶B" class="clickable-img" data-choice="B"> B
+                <img src="https://i.imgur.com/2Yy5z9o.png" alt="水瓶C" class="clickable-img" data-choice="C"> C
+            </div>
+            <span class="feedback" id="q5-feedback"></span>
+        </div>
+    </div>
+    <div class="question-block" id="q6">
+        <div class="title">6. 比較數字大小：請選出所有比 20 大的數字。</div>
+        <div class="content choices" id="q6-choices">
+            <label><input type="checkbox" value="12"> 12</label>
+            <label><input type="checkbox" value="25"> 25</label>
+            <label><input type="checkbox" value="9"> 9</label>
+            <label><input type="checkbox" value="31"> 31</label>
+            <label><input type="checkbox" value="20"> 20</label>
+            <span class="feedback" id="q6-feedback"></span>
+        </div>
+    </div>
+
+    <!-- Section 4: 時鐘與次序 -->
+    <h2>(四) 認識時鐘與次序</h2>
+    <div class="question-block" id="q7">
+        <div class="title">7. 請問現在是幾點鐘？</div>
+        <div class="content">
+            <img src="https://i.imgur.com/aCgF6b2.png" alt="4時半">
+            <div class="choices" id="q7-choices">
+                <label><input type="radio" name="q7" value="A"> 4 時正</label><br>
+                <label><input type="radio" name="q7" value="B"> 5 時半</label><br>
+                <label><input type="radio" name="q7" value="C"> 4 時半</label>
+            </div>
+            <span class="feedback" id="q7-feedback"></span>
+        </div>
+    </div>
+    <div class="question-block" id="q8">
+        <div class="title">8. 順數填寫：請填上橫線上的數字。</div>
+        <div class="content">
+            32, 33, <input type="text" id="q8-ans">, 35, 36
+            <span class="feedback" id="q8-feedback"></span>
+        </div>
+    </div>
+
+    <!-- Section 5: 圖形與空間 -->
+    <h2>(五) 認識圖形與空間</h2>
+    <div class="question-block" id="q9">
+        <div class="title">9. 認識「左」和「右」：蘋果在雪糕的哪一邊？</div>
+        <div class="content">
+            <img src="https://i.imgur.com/U8gD72h.png" alt="蘋果在左,雪糕在右">
+            <div class="choices" id="q9-choices">
+                <label><input type="radio" name="q9" value="左"> 左</label>
+                <label><input type="radio" name="q9" value="右"> 右</label>
+            </div>
+            <span class="feedback" id="q9-feedback"></span>
+        </div>
+    </div>
+    <div class="question-block" id="q10">
+        <div class="title">10. 點選下圖中的「球體」。</div>
+        <div class="content">
+            <div id="q10-choices">
+                <img src="https://i.imgur.com/wVflGzU.png" alt="立方體" class="clickable-img" data-shape="cube">
+                <img src="https://i.imgur.com/4xP2S7x.png" alt="球體" class="clickable-img" data-shape="sphere">
+                <img src="https://i.imgur.com/uR2yR91.png" alt="圓錐體" class="clickable-img" data-shape="cone">
+                <img src="https://i.imgur.com/1GjSg8R.png" alt="圓形" class="clickable-img" data-shape="circle">
+            </div>
+            <span class="feedback" id="q10-feedback"></span>
+        </div>
+    </div>
+
+    <!-- Section 6: 文字應用題 -->
+    <h2>(六) 文字應用題</h2>
+    <div class="question-block" id="q11">
+        <div class="title">11. 魚缸裡原有 6 條魚，爸爸多買了 3 條，現在共有多少條魚？</div>
+        <div class="content">
+            <img src="https://i.imgur.com/9C22i2O.png" alt="魚缸" style="max-height:100px;">
+            <input type="text" id="q11-1"> + <input type="text" id="q11-2"> = <input type="text" id="q11-ans"> 條
+            <span class="feedback" id="q11-feedback"></span>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button class="button" onclick="checkAnswers()">提交答案</button>
+        <button class="button reset" onclick="resetQuiz()">重新作答</button>
+        <div id="final-score"></div>
+    </div>
+
+<script>
+    // --- 互動功能 ---
+    function setupInteractiveElements() {
+        // 問題1：點選錢幣
+        document.querySelectorAll('#q1-coins .clickable-img').forEach(img => {
+            img.addEventListener('click', () => {
+                img.classList.toggle('selected');
+            });
+        });
+
+        // 問題5：點選圖片
+        let q5selected = null;
+        document.querySelectorAll('#q5-choices .clickable-img').forEach(img => {
+            img.addEventListener('click', (e) => {
+                // 清除其他選擇
+                document.querySelectorAll('#q5-choices .clickable-img').forEach(i => i.classList.remove('selected'));
+                // 選擇當前
+                e.currentTarget.classList.add('selected');
+                q5selected = e.currentTarget.dataset.choice;
+            });
+        });
+
+        // 問題10：點選圖片
+        let q10selected = null;
+        document.querySelectorAll('#q10-choices .clickable-img').forEach(img => {
+            img.addEventListener('click', (e) => {
+                document.querySelectorAll('#q10-choices .clickable-img').forEach(i => i.classList.remove('selected'));
+                e.currentTarget.classList.add('selected');
+                q10selected = e.currentTarget.dataset.shape;
+            });
+        });
+    }
+
+    // --- 檢查答案功能 ---
+    function checkAnswers() {
+        let score = 0;
+        const totalQuestions = 11;
+
+        // 清除舊的回饋
+        document.querySelectorAll('.feedback').forEach(el => el.textContent = '');
+        
+        // Q1: 錢幣
+        let q1_total = 0;
+        document.querySelectorAll('#q1-coins .selected').forEach(img => {
+            q1_total += parseInt(img.dataset.value);
+        });
+        if (q1_total === 8) {
+            document.getElementById('q1-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q1-feedback').textContent = '❌';
+        }
+
+        // Q2: 加法與單雙數
+        const q2_ans = document.getElementById('q2-ans').value;
+        const q2_oe = document.querySelector('input[name="q2-oe"]:checked');
+        if (q2_ans === '9' && q2_oe && q2_oe.value === '單數') {
+            document.getElementById('q2-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q2-feedback').textContent = '❌ 正確答案是 9, 單數';
+        }
+
+        // Q3: 一半
+        if (document.getElementById('q3-ans').value === '5') {
+            document.getElementById('q3-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q3-feedback').textContent = '❌ 正確答案是 5';
+        }
+
+        // Q4: 連加
+        if (document.getElementById('q4-ans').value === '9') {
+            document.getElementById('q4-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q4-feedback').textContent = '❌ 正確答案是 9';
+        }
+        
+        // Q5: 比較容量
+        const q5_selected = document.querySelector('#q5-choices .selected');
+        if (q5_selected && q5_selected.dataset.choice === 'B') {
+            document.getElementById('q5-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q5-feedback').textContent = '❌ 正確答案是 B';
+        }
+
+        // Q6: 比較大小
+        const q6_choices = document.querySelectorAll('#q6-choices input[type="checkbox"]');
+        let q6_correct = true;
+        q6_choices.forEach(cb => {
+            const val = parseInt(cb.value);
+            if ((val > 20 && !cb.checked) || (val <= 20 && cb.checked)) {
+                q6_correct = false;
+            }
+        });
+        if (q6_correct) {
+            document.getElementById('q6-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q6-feedback').textContent = '❌ 應選 25 和 31';
+        }
+
+        // Q7: 時鐘
+        const q7_ans = document.querySelector('input[name="q7"]:checked');
+        if (q7_ans && q7_ans.value === 'C') {
+            document.getElementById('q7-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q7-feedback').textContent = '❌ 正確答案是 4 時半';
+        }
+
+        // Q8: 順數
+        if (document.getElementById('q8-ans').value === '34') {
+            document.getElementById('q8-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q8-feedback').textContent = '❌ 正確答案是 34';
+        }
+
+        // Q9: 左右
+        const q9_ans = document.querySelector('input[name="q9"]:checked');
+        if (q9_ans && q9_ans.value === '左') {
+            document.getElementById('q9-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q9-feedback').textContent = '❌ 正確答案是 左';
+        }
+        
+        // Q10: 3D圖形
+        const q10_selected = document.querySelector('#q10-choices .selected');
+        if (q10_selected && q10_selected.dataset.shape === 'sphere') {
+            document.getElementById('q10-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q10-feedback').textContent = '❌ 正確答案是球體 (第二個圖)';
+        }
+
+        // Q11: 文字題
+        const q11_1 = document.getElementById('q11-1').value;
+        const q11_2 = document.getElementById('q11-2').value;
+        const q11_ans = document.getElementById('q11-ans').value;
+        if ((q11_1 === '6' && q11_2 === '3' && q11_ans === '9') || (q11_1 === '3' && q11_2 === '6' && q11_ans === '9')) {
+            document.getElementById('q11-feedback').textContent = '✅';
+            score++;
+        } else {
+            document.getElementById('q11-feedback').textContent = '❌ 正確算式是 6 + 3 = 9';
+        }
+        
+        // 顯示總分
+        document.getElementById('final-score').textContent = `你的得分： ${score} / ${totalQuestions}`;
+    }
+
+    // --- 重置功能 ---
+    function resetQuiz() {
+        // 重設表單
+        document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+        
+        // 重設點選項目
+        document.querySelectorAll('.clickable-img.selected').forEach(img => img.classList.remove('selected'));
+
+        // 清除回饋和分數
+        document.querySelectorAll('.feedback').forEach(el => el.textContent = '');
+        document.getElementById('final-score').textContent = '';
+    }
+    
+    // 初始化互動元素
+    document.addEventListener('DOMContentLoaded', setupInteractiveElements);
+
+</script>
+
+</body>
+</html>
