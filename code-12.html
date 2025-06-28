@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球星巴克門市數量統計 - 最終互動版</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            padding: 25px 40px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #005A9C;
+            text-align: center;
+            border-bottom: 2px solid #005A9C;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #2b2b2b;
+            margin-top: 40px;
+            border-left: 5px solid #005A9C;
+            padding-left: 10px;
+        }
+        .total-count-container {
+            text-align: center;
+            background-color: #eaf2f8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .total-count-container p {
+            font-size: 1.2em;
+            margin: 0;
+        }
+        .total-count {
+            font-size: 4em;
+            font-weight: bold;
+            color: #005A9C;
+            margin-top: 5px;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .chart-container { margin-top: 20px; }
+        .chart-bar-wrapper { display: flex; align-items: center; margin-bottom: 12px; }
+        .bar-label { width: 120px; font-weight: 600; flex-shrink: 0; padding-right: 15px; text-align: right; }
+        .bar {
+            height: 30px;
+            background: linear-gradient(90deg, #005A9C, #007BFF);
+            border-radius: 0 5px 5px 0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            box-sizing: border-box;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            animation: slideIn 1s ease-out;
+        }
+        @keyframes slideIn { from { width: 0; } }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .data-table th, .data-table td { border: 1px solid #ddd; padding: 12px 15px; text-align: left; }
+        .data-table thead { background-color: #005A9C; color: white; font-size: 1.1em; }
+        .country-row.expandable { cursor: pointer; transition: background-color 0.3s; }
+        .country-row.expandable:hover { background-color: #eaf2f8; }
+        .arrow { display: inline-block; transition: transform 0.3s ease; margin-right: 10px; font-size: 0.8em; }
+        .country-row.open .arrow { transform: rotate(90deg); }
+        .state-details { display: none; background-color: #fdfdfd; }
+        .state-details.visible { display: table-row; }
+        .state-details td { padding: 20px !important; }
+        .state-table { width: 90%; margin: 0 auto; border-collapse: collapse; border: 1px solid #e0e0e0; }
+        .state-table th { background-color: #6c757d; color: white; padding: 10px; }
+        .state-table td { padding: 10px; border-bottom: 1px solid #e0e0e0; }
+        .state-table tr:last-child td { border-bottom: none; }
+        details { margin-top: 30px; padding: 15px; background-color: #fdfdfd; border: 1px dashed #ccc; border-radius: 8px; }
+        summary { font-weight: bold; color: #005A9C; cursor: pointer; outline: none; }
+        summary:hover { text-decoration: underline; }
+        footer { margin-top: 20px; text-align: center; color: #888; font-size: 0.9em; }
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.8em; }
+            .total-count { font-size: 3em; }
+            .chart-bar-wrapper { flex-direction: column; align-items: flex-start; }
+            .bar-label { text-align: left; width: 100%; margin-bottom: 5px; }
+            .bar { width: 100% !important; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>全球星巴克門市數量統計</h1>
+        <div class="total-count-container">
+            <p>截至 2023 年底，全球星巴克門市總數為：</p>
+            <div class="total-count">38,038</div>
+        </div>
+        <h2>品牌故事影片：星巴克創辦人</h2>
+        <!-- ==================== 這是最終修改的部分 ==================== -->
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube-nocookie.com/embed/j4g3B4M-Z5g" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        <!-- ========================================================== -->
+        <h2>主要國家/地區門市分佈圖</h2>
+        <div class="chart-container">
+            <div class="chart-bar-wrapper">
+                <div class="bar-label">美國</div>
+                <div class="bar" style="width: 100%;">16,352</div>
+            </div>
+            <div class="chart-bar-wrapper">
+                <div class="bar-label">中國</div>
+                <div class="bar" style="width: 41.6%;">6,806</div>
+            </div>
+            <div class="chart-bar-wrapper">
+                <div class="bar-label">日本</div>
+                <div class="bar" style="width: 11.5%;">1,885</div>
+            </div>
+        </div>
+        <h2>詳細數據表 (Top 10) - <small>點擊國家可查看細項</small></h2>
+        <table class="data-table">
+            <thead><tr><th>排名</th><th>國家/地區</th><th>門市數量</th><th>佔全球比例</th></tr></thead>
+            <tbody>
+                <tr class="country-row expandable"><td><span class="arrow">▸</span>1</td><td>美國 (United States)</td><td>16,352</td><td>43.0%</td></tr><tr class="state-details"><td colspan="4"><table class="state-table"><thead><tr><th>州別 (State)</th><th>約略門市數</th></tr></thead><tbody><tr><td>加利福尼亞州 (California)</td><td>~ 3,000</td></tr><tr><td>德克薩斯州 (Texas)</td><td>~ 1,200</td></tr><tr><td>佛羅里達州 (Florida)</td><td>~ 900</td></tr><tr><td>華盛頓州 (Washington)</td><td>~ 800</td></tr><tr><td>紐約州 (New York)</td><td>~ 650</td></tr></tbody></table></td></tr>
+                <tr class="country-row expandable"><td><span class="arrow">▸</span>2</td><td>中國 (China)</td><td>6,806</td><td>17.9%</td></tr><tr class="state-details"><td colspan="4"><table class="state-table"><thead><tr><th>省份/直轄市 (Province)</th><th>約略門市數</th></tr></thead><tbody><tr><td>上海 (Shanghai)</td><td>~ 1,000+</td></tr><tr><td>江蘇 (Jiangsu)</td><td>~ 550</td></tr><tr><td>浙江 (Zhejiang)</td><td>~ 500</td></tr><tr><td>廣東 (Guangdong)</td><td>~ 500</td></tr><tr><td>北京 (Beijing)</td><td>~ 450</td></tr></tbody></table></td></tr>
+                <tr class="country-row expandable"><td><span class="arrow">▸</span>3</td><td>日本 (Japan)</td><td>1,885</td><td>5.0%</td></tr><tr class="state-details"><td colspan="4"><table class="state-table"><thead><tr><th>都道府縣 (Prefecture)</th><th>約略門市數</th></tr></thead><tbody><tr><td>東京都 (Tokyo)</td><td>~ 400</td></tr><tr><td>大阪府 (Osaka)</td><td>~ 150</td></tr><tr><td>神奈川縣 (Kanagawa)</td><td>~ 140</td></tr><tr><td>愛知縣 (Aichi)</td><td>~ 110</td></tr></tbody></table></td></tr>
+                <tr class="country-row expandable"><td><span class="arrow">▸</span>4</td><td>南韓 (South Korea)</td><td>1,818</td><td>4.8%</td></tr><tr class="state-details"><td colspan="4"><table class="state-table"><thead><tr><th>地區 (Region)</th><th>約略門市數</th></tr></thead><tbody><tr><td>首爾 (Seoul)</td><td>~ 600</td></tr><tr><td>京畿道 (Gyeonggi)</td><td>~ 400</td></tr><tr><td>釜山 (Busan)</td><td>~ 120</td></tr></tbody></table></td></tr>
+                <tr class="country-row expandable"><td><span class="arrow">▸</span>5</td><td>加拿大 (Canada)</td><td>1,465</td><td>3.9%</td></tr><tr class="state-details"><td colspan="4"><table class="state-table"><thead><tr><th>省份 (Province)</th><th>約略門市數</th></tr></thead><tbody><tr><td>安大略省 (Ontario)</td><td>~ 600</td></tr><tr><td>不列顛哥倫比亞省 (British Columbia)</td><td>~ 400</td></tr><tr><td>艾伯塔省 (Alberta)</td><td>~ 200</td></tr></tbody></table></td></tr>
+                <tr class="country-row expandable"><td><span class="arrow">▸</span>6</td><td>英國 (United Kingdom)</td><td>1,180</td><td>3.1%</td></tr><tr class="state-details"><td colspan="4"><table class="state-table"><thead><tr><th>構成國 (Country)</th><th>約略門市數</th></tr></thead><tbody><tr><td>英格蘭 (England)</td><td>~ 950</td></tr><tr><td>蘇格蘭 (Scotland)</td><td>~ 100</td></tr><tr><td>威爾斯 (Wales)</td><td>~ 50</td></tr></tbody></table></td></tr>
+                <tr class="country-row"><td>7</td><td>墨西哥 (Mexico)</td><td>785</td><td>2.1%</td></tr>
+                <tr class="country-row"><td>8</td><td>台灣 (Taiwan)</td><td>560</td><td>1.5%</td></tr>
+                <tr class="country-row"><td>9</td><td>土耳其 (Turkey)</td><td>555</td><td>1.5%</td></tr>
+                <tr class="country-row"><td>10</td><td>印尼 (Indonesia)</td><td>545</td><td>1.4%</td></tr>
+            </tbody>
+        </table>
+        <details>
+            <summary>點此查看資料來源與說明</summary>
+            <p style="margin-top: 10px;"><strong>全球總數及國家數據來源：</strong> 星巴克公司 2023 年第四季度（Fiscal Q4 2023）財務報告。<br><strong>數據統計截止日期：</strong> 2023 年 10 月 1 日。<br><strong>州/省級別數據說明：</strong> 表格中展開的各國州/省/地區細分數據為根據多方資料庫估算的大約數值，主要用於互動功能展示，並非官方精確數據。<br><strong>說明：</strong> 所有數據包含公司自營與授權經營門市。門市數量會隨時變動，此數據僅為報告發布時的統計結果。</p>
+        </details>
+    </div>
+    <footer>
+        <p>由 AI 產生 & 彙整的互動式網頁 &copy; 2024</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const expandableRows = document.querySelectorAll('.data-table .expandable');
+            expandableRows.forEach(row => {
+                row.addEventListener('click', () => {
+                    row.classList.toggle('open');
+                    const detailsRow = row.nextElementSibling;
+                    if (detailsRow && detailsRow.classList.contains('state-details')) {
+                        detailsRow.classList.toggle('visible');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
